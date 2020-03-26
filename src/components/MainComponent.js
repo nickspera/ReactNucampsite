@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Directory from './DirectoryComponent';
 import CampsiteInfo from './CampsiteInfoComponent';
 import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 import { CAMPSITES } from '../shared/campsites';
 
 class Main extends Component {
@@ -22,7 +23,8 @@ class Main extends Component {
             <div>
                 <Header/>
                 <Directory campsites={this.state.campsites} onClick={campsiteId => this.onCampsiteSelect(campsiteId)}/>
-                <CampsiteInfo campsite={this.state.campsites.filter(campsite => campsite.id === this.state.selectedCampsite)[0]} comments={this.state.comments}></CampsiteInfo>
+                <CampsiteInfo campsite={this.state.campsites.filter(campsite => campsite.id === this.state.selectedCampsite)[0]} comments={this.state.comments}/>
+                <Footer/>
             </div>
         );
     }
