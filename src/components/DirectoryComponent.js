@@ -47,27 +47,3 @@ function Directory(props) {
 
 
 export default Directory;
-
-// removed from line 51
-// {/* <div className="row">
-//     <div className="col-md-5 m-1">
-//         {this.renderSelectedCampsite(this.state.selectedCampsite)}
-//     </div>
-// </div> */}
-
-
-// removed from line 17
-// renderSelectedCampsite(campsite) {
-//     if (campsite) {
-//         return (
-//             <Card>
-//                 <CardImg top src={campsite.image} alt={campsite.name} />
-//                 <CardBody>
-//                     <CardTitle>{campsite.name}</CardTitle>
-//                     <CardText>{campsite.description}</CardText>
-//                 </CardBody>
-//             </Card>
-//         )
-//     }
-//     return <div />;
-// }
