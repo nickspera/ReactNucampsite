@@ -6,6 +6,8 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 
+const maxLength = len => val => !val || (val.length <= len);
+const minLength = len => val => val && (val.length >= len);
 
 function RenderCampsite({campsite}) {
     return (
@@ -20,16 +22,11 @@ function RenderCampsite({campsite}) {
     );
 }
 
-const maxLength = len => val => !val || (val.length <= len);
-const minLength = len => val => val && (val.length >= len);
-
-
-function RenderComments({comments, addComment, campsiteId}) {
+function RenderComments({comments, postComment, campsiteId}) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
                 <h4>Comments</h4>
-                
                 {comments.map(comment => {
                     return(
                         <div key={comment.id}>
@@ -39,7 +36,7 @@ function RenderComments({comments, addComment, campsiteId}) {
                         </div>
                     );
                 })}
-                <CommentForm campsiteId={campsiteId} addComment={addComment} />
+                <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         );
     }
@@ -47,17 +44,12 @@ function RenderComments({comments, addComment, campsiteId}) {
 }
 
 class CommentForm extends Component {
+
     constructor(props) {
         super(props);
-
         this.state = {
             isModalOpen: false,
-            yourName: '',
-            touched: {
-                yourName: false
-            }
         };
-
         this.toggleModal = this.toggleModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -70,36 +62,33 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.campsiteId, values.ratings, values.author, values.text);
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.props.postComment(this.props.campsiteId, values.ratings, values.author, values.text);
     }
 
     render() {
         return (
             <React.Fragment>
-                <Button outline onClick={this.toggleModal}><i className="fa fa-pencil fa-lg" />{' '}Submit Comment</Button>
-
+                <Button outline onClick={this.toggleModal}>
+                    <i className="fa fa-pencil fa-lg" />{' '}Submit Comment
+                </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}> Submit Comment</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
-                            <Row className="form-group">
-                                <Label htmlFor="rating" md={10}>Rating</Label>
-                                <Col md={12}>
+                            <div className="form-group">
+                                <Label htmlFor="rating">Rating</Label>
                                     <Control.select model=".rating" id="rating" name="rating" 
                                     className="form-control">
-                                        <option selected>1</option>
+                                        <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
                                         <option>5</option>
                                     </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="yourName" md={10}>Your Name</Label>
-                                <Col md={12}>
+                            </div>
+                            <div className="form-group">
+                                <Label htmlFor="yourName">Your Name</Label>
+                                <div>
                                     <Control.text model=".yourName" id="yourName" name="yourName" placeholder="Your Name"
                                     className="form-control"
                                     validators={{
@@ -118,17 +107,15 @@ class CommentForm extends Component {
                                             maxLength: 'Must be 15 characters or less'
                                         }}
                                     />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="comment" md={10}>Comment</Label>
-                                <Col md={12}>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <Label htmlFor="comment">Comment</Label>
+                                <div>
                                     <Control.textarea model=".comment" id="comment" name="comment" 
-                                        rows="6"
-                                        className="form-control"
-                                        />
-                                </Col>
-                            </Row>
+                                        rows="6" className="form-control"/>
+                                </div>
+                            </div>
                             <Button type="submit" color="primary">Submit</Button>
                         </LocalForm>
                     </ModalBody>
@@ -176,9 +163,9 @@ function CampsiteInfo(props) {
                     <RenderCampsite campsite={props.campsite} />
                     <RenderComments 
                         comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         campsiteId={props.campsite.id}
-                        />
+                    />
                 </div>
             </div>
         );
