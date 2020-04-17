@@ -98,9 +98,9 @@ class CommentForm extends Component {
                                     </Control.select>
                             </div>
                             <div className="form-group">
-                                <Label htmlFor="yourName">Your Name</Label>
+                                <Label htmlFor="author">Your Name</Label>
                                 <div>
-                                    <Control.text model=".yourName" id="yourName" name="yourName" placeholder="Your Name"
+                                    <Control.text model=".author" id="author" name="author" placeholder="Your Name"
                                     className="form-control"
                                     validators={{
                                         minLength: minLength(2),
@@ -110,7 +110,7 @@ class CommentForm extends Component {
                                     />
                                     <Errors
                                         className="text-danger"
-                                        model=".yourName"
+                                        model=".author"
                                         show="touched"
                                         component="div"
                                         messages={{
@@ -121,9 +121,9 @@ class CommentForm extends Component {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <Label htmlFor="comment">Comment</Label>
+                                <Label htmlFor="text">Comment</Label>
                                 <div>
-                                    <Control.textarea model=".comment" id="comment" name="comment" 
+                                    <Control.textarea model=".text" id="text" name="text" 
                                         rows="6" className="form-control"/>
                                 </div>
                             </div>

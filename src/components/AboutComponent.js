@@ -1,15 +1,18 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 
 //Week 3 Assignment Task 2
 function RenderPartner({partner}) {
     if (partner) {
         return(
             <React.Fragment>
-                <Media object src={partner.image} alt={partner.name} width="150"/>
-                <Media body className="ml-5 mb-4">
-                    <Media heading>{partner.name}</Media>
+                <Media object src={baseUrl + partner.image} alt={partner.name} width="150"/>
+                    <Media body className="ml-5 mb-4">
+                        <Media heading>{partner.name}</Media>
                     {partner.description}
                 </Media>
             </React.Fragment>
@@ -20,16 +23,56 @@ function RenderPartner({partner}) {
         );
     }
 }
+// Week 5 Workshop
+function PartnerList(props) {
 
-function About(props) {
-    const partners = props.partners.map(partner => {
+    const partners = props.partners.partners.map(partner => {
         return (
         // Week 3 assignemnt 3
-        <Media tag="li" key={partner.id}>
-            <RenderPartner partner={partner} />
-        </Media>
+        // Week 5 task 3
+        <Fade in key={partner.id}>
+            <Media tag="li">
+                <RenderPartner partner={partner} />
+            </Media>
+        </Fade>
         );
     });
+
+    if (props.partners.isLoading) {
+       return (
+        <div className="container">
+            <div className="row">
+                <Loading />
+            </div>
+        </div>
+    );
+    }
+    if (props.partners.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.partners.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Week 5 workshop
+    return (
+        <div className="col mt-4">
+            <Media list>
+                    <Stagger in>
+                        {partners}
+                    </Stagger>
+            </Media>
+        </div>
+    )
+};
+
+
+function About(props) {
 
     return (
         <div className="container">
@@ -83,16 +126,16 @@ function About(props) {
                 <div className="col-12">
                     <h3>Community Partners</h3>
                 </div>
-                <div className="col mt-4">
-                    <Media list>
-                        {partners}
-                    </Media>
-                </div>
+                <Stagger in>
+                    <Fade in>
+                        <PartnerList partners={props.partners}/>
+                    </Fade>
+                </Stagger>
             </div>
         </div>
      );
 }
-
+// line ~122 'render PartnerList component and pass it the prop "partners={props.partners}"'
 
 
 export default About;
